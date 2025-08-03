@@ -13,6 +13,7 @@ const int ShotClockHigh = 48;
 const int ShotClockLow = 49;
 const int TeamFoulsHome = 15;
 const int TeamFoulsGuest = 16;
+const int GameClockRunning = 20;
 
 class StramatelProtocolParser
 {
