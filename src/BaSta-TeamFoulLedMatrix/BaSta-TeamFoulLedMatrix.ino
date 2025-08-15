@@ -3,6 +3,7 @@
 #include "StramatelProtocolParser.h"
 #include "BebasNeue-Regular.h"
 
+const byte Brightness = 255;
 const int Baudrate = 19200;
 const int TeamSelectionPin = A5;
 
@@ -83,12 +84,13 @@ void updateDisplay()
     matrix.setFont(&BebasNeue_Regular40pt7b);
     matrix.fillScreen(matrix.color565(0, 0, 0));
     matrix.setCursor(1, 59);
+    matrix.setTextColor(matrix.color565(Brightness, Brightness, Brightness));
     matrix.setTextSize(1);
     matrix.print(arr[displayState]);
   }
   else
   {
-    matrix.fillScreen(matrix.color565(255, 0, 0));
+    matrix.fillScreen(matrix.color565(Brightness, 0, 0));
   }
   matrix.show();
 }
