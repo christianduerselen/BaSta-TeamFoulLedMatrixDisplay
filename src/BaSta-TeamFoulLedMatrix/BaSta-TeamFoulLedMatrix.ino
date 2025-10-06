@@ -5,7 +5,7 @@
 
 const byte Brightness = 255;
 const int Baudrate = 19200;
-const int TeamSelectionPin = A5;
+const int TeamSelectionPin = 13;
 
 uint8_t RgbPins[]  = {2, 3, 4, 5, 6, 7};
 uint8_t AddrPins[] = {A0, A1, A2, A3};
@@ -53,8 +53,7 @@ void loop()
     return;
 
   // CONTROL
-  
-  bool teamSelection = digitalRead(TeamSelectionPin);
+  bool teamSelection = !digitalRead(TeamSelectionPin);
   int teamFoulMessageByte = teamSelection ? TeamFoulsHome : TeamFoulsGuest;
   byte teamFoulValue = protocolParser.getMessageByte(teamFoulMessageByte);
 
