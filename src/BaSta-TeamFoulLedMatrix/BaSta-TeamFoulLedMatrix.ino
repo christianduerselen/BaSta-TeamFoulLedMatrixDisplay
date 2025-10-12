@@ -53,8 +53,7 @@ void loop()
     return;
 
   // CONTROL
-  
-  bool teamSelection = digitalRead(TeamSelectionPin);
+  bool teamSelection = !digitalRead(TeamSelectionPin);
   int teamFoulMessageByte = teamSelection ? TeamFoulsHome : TeamFoulsGuest;
   byte teamFoulValue = protocolParser.getMessageByte(teamFoulMessageByte);
 
