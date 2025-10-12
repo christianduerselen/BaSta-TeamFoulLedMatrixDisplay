@@ -3,9 +3,9 @@
 #include "StramatelProtocolParser.h"
 #include "BebasNeue-Regular.h"
 
-const byte Brightness = 255;
+const byte Brightness = 64;
 const int Baudrate = 19200;
-const int TeamSelectionPin = A5;
+const int TeamSelectionPin = 13;
 
 uint8_t RgbPins[]  = {2, 3, 4, 5, 6, 7};
 uint8_t AddrPins[] = {A0, A1, A2, A3};
@@ -15,7 +15,7 @@ uint8_t OePin      = 9;
  
 const char *arr[] = {"/", "0", "1", "2", "3", "4" };
 
-Adafruit_Protomatter matrix(64, 1, 1, RgbPins, 4, AddrPins, ClockPin, LatchPin, OePin, true);
+Adafruit_Protomatter matrix(64, 2, 1, RgbPins, 4, AddrPins, ClockPin, LatchPin, OePin, true);
 StramatelProtocolParser protocolParser;
 byte inputState = 0;
 byte displayState = 0;
