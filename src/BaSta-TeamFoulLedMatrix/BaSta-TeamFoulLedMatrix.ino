@@ -6,6 +6,7 @@
 const byte Brightness = 64;
 const int Baudrate = 19200;
 const int TeamSelectionPin = 13;
+const int ForceTeamFoulsPin = 12;
 const int DataTimeout = 3000;
 
 uint8_t RgbPins[]  = {2, 3, 4, 5, 6, 7};
@@ -28,6 +29,7 @@ void setup()
   Serial1.begin(Baudrate);
 
   pinMode(TeamSelectionPin, INPUT_PULLUP);
+  pinMode(ForceTeamFoulsPin, INPUT_PULLUP);
 
   // Initialize matrix
   ProtomatterStatus status = matrix.begin();
@@ -44,6 +46,13 @@ void loop()
   {
     inputState = 0;
     displayState = 0;
+    updateDisplay();
+  }
+
+  // FORCE TEAM FOULS
+  if (!digitalRead(ForceTeamFoulsPin) && displayState != 6)
+  {
+    displayState = 6;
     updateDisplay();
   }
 
