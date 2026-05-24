@@ -6,6 +6,7 @@
 const byte Brightness = 64;
 const int Baudrate = 19200;
 const int TeamSelectionPin = 13;
+const int DataTimeout = 3000;
 
 uint8_t RgbPins[]  = {2, 3, 4, 5, 6, 7};
 uint8_t AddrPins[] = {A0, A1, A2, A3};
@@ -19,6 +20,7 @@ Adafruit_Protomatter matrix(64, 2, 1, RgbPins, 4, AddrPins, ClockPin, LatchPin, 
 StramatelProtocolParser protocolParser;
 byte inputState = 0;
 byte displayState = 0;
+unsigned long lastDataTime = 0;
 
 void setup()
 {
@@ -37,12 +39,22 @@ void setup()
 
 void loop()
 {
+  // TIMEOUT
+  if (inputState != 0 && millis() - lastDataTime > DataTimeout)
+  {
+    inputState = 0;
+    displayState = 0;
+    updateDisplay();
+  }
+
   // RECEIVE
   if (!Serial1.available() > 0)
     return;
   
   // Read next byte from input
   byte value = Serial1.read();
+
+  lastDataTime = millis();
 
   Serial.write(value);
 
