@@ -63,8 +63,6 @@ void loop()
   // Read next byte from input
   byte value = Serial1.read();
 
-  lastDataTime = millis();
-
   Serial.write(value);
 
   protocolParser.push(value);
@@ -73,14 +71,20 @@ void loop()
   if (!protocolParser.isValidMessage())
     return;
 
+  // Only a complete frame counts as data signal: stray bytes or a foreign protocol on the line
+  // must not keep the last foul count alive.
+  lastDataTime = millis();
+
   // CONTROL
   bool teamSelection = !digitalRead(TeamSelectionPin);
   int teamFoulMessageByte = teamSelection ? TeamFoulsHome : TeamFoulsGuest;
   byte teamFoulValue = protocolParser.getMessageByte(teamFoulMessageByte);
 
+  // Only a digit is a foul count. Anything else - the blank byte of a sender that does not
+  // transmit team fouls, garbage - shows the default "/". Five fouls and more are all "red".
   byte newState = 0;
-  if (teamFoulValue >= 0x30 || teamFoulValue <= 0x35)
-    newState = teamFoulValue - 0x30 + 1;
+  if (teamFoulValue >= 0x30 && teamFoulValue <= 0x39)
+    newState = min(teamFoulValue - 0x30 + 1, 6);
 
   if (newState != inputState)
   {
