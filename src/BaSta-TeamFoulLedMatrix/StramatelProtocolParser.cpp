@@ -10,8 +10,8 @@ void StramatelProtocolParser::push(byte value)
   if (_messagePointer >= MessageSize)
     _messagePointer = 0;
 
-  // 0xF8 is the start code if a new message, therefore reset message pointer
-  if (value == MessageStart)
+  // A start byte opens a new message, therefore reset message pointer
+  if (value >= StartByteFamily)
     _messagePointer = 0;
 
   // Write value and advance pointer
@@ -25,8 +25,8 @@ bool StramatelProtocolParser::isValidMessage()
   if (_messagePointer != MessageSize)
     return false;
 
-  // A message must start with 0xF8
-  if (_message[0] != 0xF8)
+  // A message must start with a byte of the start family
+  if (_message[0] < StartByteFamily)
     return false;
 
   // A message must follow with 0x33, 0x37 or 0x38

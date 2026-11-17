@@ -4,7 +4,10 @@
 #include "Troolean.h"
 
 const int MessageSize = 54;
-const byte MessageStart = 0xF8;
+// The vendor PDF documents 0xF8 as the start byte, but real consoles vary the low three bits:
+// 0xF9 and 0xFD were both seen on the wire. Anything from 0xF8 upwards opens a frame; the
+// inter-console bytes a main console appends after each frame (E0 E8 E4) fall outside it.
+const byte StartByteFamily = 0xF8;
 const int GameClockMinuteHigh = 4;
 const int GameClockMinuteLow = 5;
 const int GameClockSecondHigh = 6;
