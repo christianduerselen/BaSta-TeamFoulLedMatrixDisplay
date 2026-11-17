@@ -2,7 +2,7 @@
 
 A basketball scoreboard accessory that displays a team's foul count on an RGB LED matrix panel. The firmware runs on an **Arduino Zero** and uses the [Adafruit Protomatter](https://github.com/adafruit/Adafruit_Protomatter) library to drive a 64×32 HUB75 LED matrix.
 
-The foul count received from a Stramatel scoreboard controller is rendered in white using the "Bebas Neue" font. When the team reaches the bonus foul limit and the game clock is running, the entire display turns solid red. A switch selects whether the home or guest team fouls are shown. If no data is received for 3 seconds the display clears automatically.
+The foul count received from a Stramatel scoreboard controller is rendered in white using the "Bebas Neue" font. When the team reaches the bonus foul limit and the game clock is running, the entire display turns solid red. A switch selects whether the home or guest team fouls are shown. If no valid Stramatel frame is received for 3 seconds the display falls back to the default "/".
 
 ## Hardware
 
@@ -39,7 +39,9 @@ At runtime:
 - Press and hold the **force team fouls button** to immediately show the solid red bonus screen, regardless of the data received.
 - The current foul count (0–4) is shown in white using the Bebas Neue font.
 - When the team reaches the bonus foul limit and the game clock is running, the display turns **solid red**.
-- If no serial data is received for 3 seconds, the display clears.
+- Five fouls and more show the solid red screen as well.
+- A frame whose team-foul byte is not a digit (a sender that does not transmit team fouls leaves it blank) shows the default "/".
+- If no valid Stramatel frame is received for 3 seconds, the display falls back to "/". Stray bytes on the line do not count as a signal.
 
 ## License
 
